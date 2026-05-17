@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAA S&C Session</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #181818;
+    --border: #2a2a2a;
+    --text: #f0ede8;
+    --muted: #7a7570;
+    --gym: #e8b84b;
+    --pitch-sprint: #4be8a0;
+    --pitch-tempo: #4baee8;
+    --gym2: #e86b4b;
+    --accent-dim: rgba(232, 184, 75, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .session-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  h1 span {
+    color: var(--gym);
+  }
+
+  .meta-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--muted);
+  }
+
+  .chip.highlight {
+    border-color: var(--gym);
+    color: var(--gym);
+    background: rgba(232, 184, 75, 0.07);
+  }
+
+  /* TIMELINE BAR */
+  .timeline {
+    display: flex;
+    height: 6px;
+    width: 100%;
+  }
+
+  .tl-seg {
+    height: 100%;
+    transition: opacity 0.2s;
+  }
+
+  /* PHASES GRID */
+  .phases {
+    padding: 32px 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .phase-header {
+    padding: 20px 22px 16px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .phase-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .phase-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  .phase-duration {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .phase-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+  }
+
+  /* Color theming per phase */
+  .phase-1 .phase-number { color: var(--gym); }
+  .phase-1 .phase-accent { background: var(--gym); }
+
+  .phase-2 .phase-number { color: var(--pitch-sprint); }
+  .phase-2 .phase-accent { background: var(--pitch-sprint); }
+
+  .phase-3 .phase-number { color: var(--pitch-tempo); }
+  .phase-3 .phase-accent { background: var(--pitch-tempo); }
+
+  .phase-4 .phase-number { color: var(--gym2); }
+  .phase-4 .phase-accent { background: var(--gym2); }
+
+  /* BLOCKS INSIDE PHASE */
+  .phase-body {
+    padding: 0;
+  }
+
+  .block {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .block:last-child {
+    border-bottom: none;
+  }
+
+  .block-label {
+    padding: 12px 22px 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .exercises {
+    list-style: none;
+    padding: 8px 0 14px;
+  }
+
+  .exercises li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    padding: 6px 22px;
+    gap: 16px;
+    font-size: 14.5px;
+    line-height: 1.35;
+  }
+
+  .ex-name {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ex-scheme {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  .phase-1 .ex-scheme { color: var(--gym); }
+  .phase-2 .ex-scheme { color: var(--pitch-sprint); }
+  .phase-3 .ex-scheme { color: var(--pitch-tempo); }
+  .phase-4 .ex-scheme { color: var(--gym2); }
+
+  /* REST / NOTE TAGS */
+  .note-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 22px 14px;
+    padding: 8px 12px;
+    border-radius: 2px;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .note-tag.rest {
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid var(--border);
+    color: var(--muted);
+  }
+
+  .note-tag.key {
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid var(--muted);
+    color: #b0ada8;
+  }
+
+  /* COACHING CUES */
+  .cues {
+    padding: 10px 22px 16px;
+  }
+
+  .cue-item {
+    display: flex;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 13px;
+    color: #9a9590;
+    line-height: 1.45;
+  }
+
+  .cue-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+    background: var(--muted);
+  }
+
+  /* TIMELINE BOTTOM */
+  .session-timeline {
+    max-width: 1400px;
+    margin: 20px auto 0;
+    padding: 0 24px;
+  }
+
+  .tl-full {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    height: 40px;
+  }
+
+  .tl-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #000;
+    border-right: 1px solid rgba(0,0,0,0.3);
+    transition: opacity 0.2s;
+  }
+
+  .tl-block:last-child { border-right: none; }
+
+  .tl-gym1  { background: var(--gym); flex: 20; }
+  .tl-sp    { background: var(--pitch-sprint); flex: 15; }
+  .tl-tp    { background: var(--pitch-tempo); flex: 15; }
+  .tl-gym2  { background: var(--gym2); flex: 20; }
+  .tl-trans { background: var(--border); flex: 5; color: var(--muted); }
+
+  .tl-labels {
+    display: flex;
+    padding: 6px 0;
+  }
+
+  .tl-lbl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .tl-lbl:first-child { flex: 1; }
+  .tl-lbl:last-child { text-align: right; }
+
+  /* INTENT BANNER */
+  .intent {
+    max-width: 1400px;
+    margin: 24px auto 0;
+    padding: 0 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .intent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .intent-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .intent-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; color: black; }
+    .phase { border: 1px solid #ddd; }
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 16px 16px; }
+    .phases { padding: 16px 12px; }
+    .session-timeline, .intent { padding: 0 12px; }
+    .tl-block { font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="session-label">Senior Club · S&amp;C Session</div>
+    <h1>Gym → <span>Pitch</span></h1>
+  </div>
+  <div class="meta-chips">
+    <div class="chip highlight">≤ 75 Min</div>
+    <div class="chip">No Ball</div>
+    <div class="chip">Self-Led</div>
+    <div class="chip">4 Phases</div>
+  </div>
+</header>
+
+<!-- INTENT CARDS -->
+<div class="intent">
+  <div class="intent-card">
+    <div class="intent-label">Session Goal</div>
+    <div class="intent-text">Lower body prime → acceleration mechanics → aerobic-speed load → upper body strength. Full physical stimulus in one block.</div>
+  </div>
+  <div class="intent-card">
+    <div class="intent-label">Intensity Profile</div>
+    <div class="intent-text">Moderate → High → Moderate-High → Moderate. Neural demand front-loaded before residual fatigue builds.</div>
+  </div>
+  <div class="intent-card">
+    <div class="intent-label">Player Note</div>
+    <div class="intent-text">Move with intent. Rest periods are fixed — don't skip them. Log your working weights for Gym 1 &amp; 2.</div>
+  </div>
+</div>
+
+<!-- SESSION TIMELINE -->
+<div class="session-timeline">
+  <div class="tl-full" style="margin-top:20px;">
+    <div class="tl-block tl-gym1">GYM 1<br>20'</div>
+    <div class="tl-block tl-trans" style="color:var(--muted); font-size:9px;">WALK</div>
+    <div class="tl-block tl-sp">SPRINT<br>15'</div>
+    <div class="tl-block tl-tp">TEMPO<br>15'</div>
+    <div class="tl-block tl-trans" style="color:var(--muted); font-size:9px;">WALK</div>
+    <div class="tl-block tl-gym2">GYM 2<br>20'</div>
+  </div>
+  <div class="tl-labels">
+    <div class="tl-lbl">0:00</div>
+    <div class="tl-lbl">75:00</div>
+  </div>
+</div>
+
+<!-- PHASES -->
+<div class="phases">
+
+  <!-- PHASE 1: GYM - LOWER BODY -->
+  <div class="phase phase-1">
+    <div class="phase-header">
+      <div class="phase-number">Phase 01 · GYM · 0–20 min</div>
+      <div class="phase-title">Lower Body<br>Activation &amp; Strength</div>
+      <div class="phase-duration">20 min</div>
+      <div class="phase-accent"></div>
+    </div>
+    <div class="phase-body">
+
+      <div class="block">
+        <div class="block-label">Activation — 5 min (no rest)</div>
+        <ul class="exercises">
+          <li><span class="ex-name">Glute Bridge Hold</span><span class="ex-scheme">2 × 10 reps</span></li>
+          <li><span class="ex-name">Banded Clamshell</span><span class="ex-scheme">2 × 12 e/s</span></li>
+          <li><span class="ex-name">Hip 90/90 Stretch + Rotation</span><span class="ex-scheme">5 reps e/s</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label">Strength — 15 min</div>
+        <ul class="exercises">
+          <li><span class="ex-name">Barbell Back Squat</span><span class="ex-scheme">3 × 5 @75–80%</span></li>
+          <li><span class="ex-name">Romanian Deadlift</span><span class="ex-scheme">3 × 8</span></li>
+          <li><span class="ex-name">DB Reverse Lunge</span><span class="ex-scheme">2 × 8 e/s</span></li>
+        </ul>
+        <div class="note-tag rest">⏱ Rest: 90 sec between sets · Move between exercises with minimal delay</div>
+      </div>
+
+      <div class="cues">
+        <div class="cue-item"><div class="cue-dot"></div>Squat — brace hard, knees track toes, controlled descent</div>
+        <div class="cue-item"><div class="cue-dot"></div>RDL — hinge at hip, soft knee, bar stays close to legs</div>
+        <div class="cue-item"><div class="cue-dot"></div>Lunges — tall torso, don't let front knee collapse in</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 2: PITCH - ACCELERATION & SPRINTS -->
+  <div class="phase phase-2">
+    <div class="phase-header">
+      <div class="phase-number">Phase 02 · PITCH · 22–37 min</div>
+      <div class="phase-title">Acceleration &amp;<br>Sprint Training</div>
+      <div class="phase-duration">15 min</div>
+      <div class="phase-accent"></div>
+    </div>
+    <div class="phase-body">
+
+      <div class="block">
+        <div class="block-label">Mechanics Warm-Up — 4 min</div>
+        <ul class="exercises">
+          <li><span class="ex-name">Wall Drive (2-point)</span><span class="ex-scheme">2 × 8 e/s</span></li>
+          <li><span class="ex-name">A-March</span><span class="ex-scheme">2 × 15m</span></li>
+          <li><span class="ex-name">A-Skip</span><span class="ex-scheme">2 × 15m</span></li>
+          <li><span class="ex-name">Build-Up Run</span><span class="ex-scheme">2 × 30m</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label">Sprint Work — 11 min</div>
+        <ul class="exercises">
+          <li><span class="ex-name">10m Acceleration (2-pt stance)</span><span class="ex-scheme">4 × MAX</span></li>
+          <li><span class="ex-name">20m Flying Start Sprint</span><span class="ex-scheme">4 × MAX</span></li>
+          <li><span class="ex-name">30m Max Effort (standing start)</span><span class="ex-scheme">3 × MAX</span></li>
+        </ul>
+        <div class="note-tag rest">⏱ Rest: 45 sec after 10m · 60 sec after 20m · 75 sec after 30m</div>
+      </div>
+
+      <div class="cues">
+        <div class="cue-item"><div class="cue-dot"></div>Low body position off the start — shin angle forward</div>
+        <div class="cue-item"><div class="cue-dot"></div>Drive arms back aggressively — 90° at elbow</div>
+        <div class="cue-item"><div class="cue-dot"></div>First 3 steps are the focus — stay patient, don't pop up</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 3: PITCH - INTENSIVE TEMPO -->
+  <div class="phase phase-3">
+    <div class="phase-header">
+      <div class="phase-number">Phase 03 · PITCH · 37–52 min</div>
+      <div class="phase-title">Intensive<br>Tempo Runs</div>
+      <div class="phase-duration">15 min</div>
+      <div class="phase-accent"></div>
+    </div>
+    <div class="phase-body">
+
+      <div class="block">
+        <div class="block-label">Main Work — 15 min</div>
+        <ul class="exercises">
+          <li><span class="ex-name">100m Tempo Run</span><span class="ex-scheme">6 × 80–85%</span></li>
+        </ul>
+        <div class="note-tag rest">⏱ Rest: 45–50 sec walk-back recovery between each</div>
+        <div class="note-tag key">📌 Alternate: 4 × 150m @ 80% if pitch length allows — 60 sec rest</div>
+      </div>
+
+      <div class="block">
+        <div class="block-label">Intensity Anchor</div>
+        <ul class="exercises">
+          <li><span class="ex-name">80–85% effort</span><span class="ex-scheme">Controlled, not all-out</span></li>
+          <li><span class="ex-name">All reps same pace</span><span class="ex-scheme">Fade = stop</span></li>
+        </ul>
+      </div>
+
+      <div class="cues">
+        <div class="cue-item"><div class="cue-dot"></div>These are NOT sprints — they're aerobic-speed efforts</div>
+        <div class="cue-item"><div class="cue-dot"></div>Consistent form across all 6 reps is the goal</div>
+        <div class="cue-item"><div class="cue-dot"></div>If pace drops significantly by rep 5–6, stop there</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 4: GYM - UPPER BODY -->
+  <div class="phase phase-4">
+    <div class="phase-header">
+      <div class="phase-number">Phase 04 · GYM · 54–75 min</div>
+      <div class="phase-title">Upper Body<br>Weight Training</div>
+      <div class="phase-duration">20 min</div>
+      <div class="phase-accent"></div>
+    </div>
+    <div class="phase-body">
+
+      <div class="block">
+        <div class="block-label">Push / Pull Superset — 12 min</div>
+        <ul class="exercises">
+          <li><span class="ex-name">Bench Press (BB or DB)</span><span class="ex-scheme">3 × 8</span></li>
+          <li><span class="ex-name">Bent-Over Row (BB or DB)</span><span class="ex-scheme">3 × 8</span></li>
+        </ul>
+        <div class="note-tag rest">⏱ Superset A+B = 1 round · Rest 60 sec between rounds</div>
+      </div>
+
+      <div class="block">
+        <div class="block-label">Accessory — 8 min</div>
+        <ul class="exercises">
+          <li><span class="ex-name">DB Shoulder Press</span><span class="ex-scheme">2 × 10</span></li>
+          <li><span class="ex-name">Chin-Ups / Pull-Ups</span><span class="ex-scheme">2 × max reps</span></li>
+          <li><span class="ex-name">Tricep Dips or Pushdowns</span><span class="ex-scheme">2 × 12</span></li>
+        </ul>
+        <div class="note-tag rest">⏱ Rest: 45 sec between accessory sets — keep it moving</div>
+      </div>
+
+      <div class="cues">
+        <div class="cue-item"><div class="cue-dot"></div>Bench — feet flat, scapula retracted, controlled lowering</div>
+        <div class="cue-item"><div class="cue-dot"></div>Row — brace the core, don't let back round under load</div>
+        <div class="cue-item"><div class="cue-dot"></div>Fatigue is high here — drop weight if form breaks</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
