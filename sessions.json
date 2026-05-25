@@ -284,4 +284,46 @@
       }
     ]
   }
+  {
+  "title": "Kickouts — Ball in Hands",
+  "file": "kickouts-ball-in-hands.html",
+  "sport": "gaa",
+  "themes": ["restart"],
+  "color": "gaa-def",
+  "type": "Team · Full Pitch · Re-Start Theme",
+  "badge": "Live",
+  "desc": "Goalkeeper WU with 5-5-5 tee practice, primary possession KO drill (Targets · Movement · Breaks), Separation Game SSG, full game KO defence. 3-group rotation.",
+  "stats": [
+    {"val": "5",   "label": "Phases"},
+    {"val": "~75", "label": "Mins"},
+    {"val": "Full","label": "Squad"}
+  ],
+  "pills": [
+    {"label": "Kickouts",   "cls": "pp-game"},
+    {"label": "GK WU",      "cls": "pp-tech"},
+    {"label": "Separation", "cls": "pp-dia"},
+    {"label": "Rotation",   "cls": "pp-vo2"}
+  ]
+    {
+  "title": "1-Day Full Body — Level 1 · In-Season",
+  "file": "Full_Body_Level1_InSeason.html",
+  "sport": "sc",
+  "themes": ["gym", "inseason"],
+  "color": "sc-inseason",
+  "type": "Individual · Gym · In-Season",
+  "badge": "Live",
+  "desc": "In-season version at 70–75% off-season volume. Plyos 3×2, Power block 3×3, all 3 tri-sets at 2 sets each. RAMP warm-up and special circuits unchanged.",
+  "stats": [
+    {"val": "1",   "label": "Day/Wk"},
+    {"val": "Gym", "label": "Format"},
+    {"val": "Lvl 1","label": "Level"}
+  ],
+  "pills": [
+    {"label": "In-Season",  "cls": "pp-dia"},
+    {"label": "Full Body",  "cls": "pp-gym"},
+    {"label": "70-75% Vol", "cls": "pp-game"},
+    {"label": "Level 1",    "cls": "pp-gym"}
+  ]
+}
+}
 ]
